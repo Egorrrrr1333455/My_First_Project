@@ -6,14 +6,14 @@ class Human:
         self.race = race
         self.clas = clas
         self.level = level
-        self.exp = exp
-        self.hp = hp
-        self.strenght = strenght
-        self.agility = agility
-        self.intelekt = intelekt
-        self.dex = dex
-        self.damage = damage
-        self.armor = armor
+        self.exp = exp #
+        self.hp = hp #Здоровье
+        self.strenght = strenght #тем больше сила,больше хп и урона будет.
+        self.agility = agility #Если устанем,будет шанс промахнутся по сопернику.
+        self.intelekt = intelekt #Обмануть торговца
+        self.dex = dex #Шанс уклонится от атак.
+        self.damage = damage #cколько урона мы наносим.
+        self.armor = armor #Отрожает урон.
     def apply_race(self):
         if self.race == "human":
             self.hp += 10
@@ -85,3 +85,43 @@ class Human:
         print(f"🐇Ловкость: {self.dex}")
         print(f"🔋Урон: {self.damage}")
         print(f"🧔Броня: {self.armor}")
+    def level_up(self):
+        self.level += 1
+        self.hp += 10
+        self.damage += 5
+        self.dex += 5
+        self.strenght += 5
+        self.intelekt += 5
+        self.agility += 3
+        print(f"Вы повысили уровень до {self.level}! Вы можете проверить свои статистики.")
+    def exp(self,exp):
+        self.exp += exp
+        print(f"Вы получили {exp} Опыта!")
+        x = 0
+        while self.exp >= 50:
+            self.exp -= 50
+            x += 1
+        print(f"Получено {x} Уровней!")
+
+
+
+    def
+class Enemy:
+    def __init__(self,damage,armor,intelekt,hp,level,exp,dex,name):
+        self.damage = damage
+        self.armor = armor
+        self.intelekt = intelekt
+        self.hp = hp
+        self.level = level
+        self.exp = exp
+        self.dex = dex
+        self.name = name
+    def show_statss(self):
+        print(f"Имя врага: {self.name}")
+        print(f"Дамаг: {self.damage}")
+        print(f"Здоровье: {self.hp}")
+        print(f"Уровень: {self.level}")
+        print(f"Экспа: {self.exp}")
+        print(f"Ловкость:{self.dex}")
+        print(f"Броня: {self.armor}")
+        print(f"Интелект: {self.intelekt}")
