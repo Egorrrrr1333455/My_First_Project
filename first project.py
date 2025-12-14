@@ -1,5 +1,5 @@
 #создать класс персонажа , продумать его характеристики добавить механику выбора рассы и класса.
-
+import random
 class Human:
     def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor):
         self.name = name
@@ -135,9 +135,52 @@ class Trader:
         "Волшебник": {"Шансы":0.1,"имя":"Пётр"}
 
     }
+    ITEMS = {
+        "Мечник": [
+            Item("Ржавый меч", "weapon", 5, 50.0),
+            Item("Стальной клинок", "weapon", 10, 150.0),
+            Item("Эльфийский лук", "weapon", 15, 300.0),
+            Item("Магический посох", "weapon", 20, 500.0)
+        ],
+        "Броник": [
+            Item("Кожаная броня", "armor", 5, 50.0),
+            Item("Кольчуга", "armor", 10, 150.0),
+            Item("Латные доспехи", "armor", 15, 300.0),
+            Item("Магические одежды", "armor", 20, 500.0)
+        ],
+        "Алхимик": [
+            Item("Зелье здоровья", "potion", 50, 100.0),
+            Item("Эликсир силы", "potion", 0, 150.0, {"strength": 5}),
+            Item("Настойка ловкости", "potion", 0, 120.0, {"dex": 5})
+        ]
+    }
 
     def __init__(self,name,tupe):
         if tupe in self.chance:
             self.tupe = tupe
             self.name = self.chance [self.tupe]["имя"]
+    def shops(self):
+        rand = random.randint(0,100)
+        if rand <= 20:
+            return "Мечник"
+        elif rand <= 60:
+            return "Броник"
+        elif rand <= 90:
+            return "Алхимик"
+        elif rand <= 100:
+            return "Волшебник"
+
+    def create_inv(self):
+        inv = []
+        special_items = []
+        if self.tupe in self.ITEMS:
+            special_items = self.ITEMS [self.tupe]
+
+        cifras = random.randint(3,5)
+        for i in range(cifras):
+            if special_items == True:
+                item = random.choice(special_items)
+                inv.append(item)
+        return inv
+
 
