@@ -54,7 +54,7 @@ class Human:
             self.agility += 10
             self.intelekt += 9
             self.dex += 10
-            self.damage += 5
+            self.damмнage += 5
             self.armor += 25
         elif self.race == "archor":
             self.hp += 10
@@ -125,3 +125,19 @@ class Enemy:
         print(f"Ловкость:{self.dex}")
         print(f"Броня: {self.armor}")
         print(f"Интелект: {self.intelekt}")
+class Item:
+    def __init__(self,name:str,item_tupe:str,value:int,price:float,stats:dict = None):
+class Trader:
+    chance = {
+        "Мечник":{"Шансы":0.2,"имя":"Диабло"},
+        "Броник": {"Шансы":0.4,"имя":"Урбан"},
+        "Алхимик": {"Шансы":0.3,"имя":"Александр"},
+        "Волшебник": {"Шансы":0.1,"имя":"Пётр"}
+
+    }
+
+    def __init__(self,name,tupe):
+        if tupe in self.chance:
+            self.tupe = tupe
+            self.name = self.chance [self.tupe]["имя"]
+
