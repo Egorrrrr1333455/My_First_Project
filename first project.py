@@ -105,7 +105,7 @@ class Human:
 
 
 
-    def
+    def:
 class Enemy:
     def __init__(self,damage,armor,intelekt,hp,level,exp,dex,name):
         self.damage = damage
@@ -182,5 +182,130 @@ class Trader:
                 item = random.choice(special_items)
                 inv.append(item)
         return inv
+
+    ITEMS = {
+        "weapon": [
+            Item("Ржавый меч", "weapon", 5, 50.0),
+            Item("Стальной клинок", "weapon", 10, 150.0),
+            Item("Эльфийский лук", "weapon", 15, 300.0),
+            Item("Магический посох", "weapon", 20, 500.0),
+            Item("Сабля","weapon", 5, 300.0),
+            Item("Двойная Катана", "weapon", 25 , 700.0),
+            Item("Меч дракона", "weapon",100, 1500.0)
+        ],
+        "armor": [
+            Item("Кожаная броня", "armor", 5, 50.0),
+            Item("Кольчуга", "armor", 10, 150.0),
+            Item("Латные доспехи", "armor", 15, 300.0),
+            Item("Магические одежды", "armor", 20, 500.0)
+        ],
+        "potion": [
+            Item("Зелье здоровья", "potion", 50, 100.0),
+            Item("Эликсир силы", "potion", 0, 150.0, {"strength": 5}),
+            Item("Настойка ловкости", "potion", 0, 120.0, {"dex": 5})
+
+        ]
+    }
+
+class Ennemy:
+    def __init__(self,name,hp,dex,damage,armor,level,strenght,agility,exp):
+        self.name = name
+        self.hp = hp
+        self.strenght = strenght
+        self.agility = agility
+        self.dex = dex
+        self.damage = damage
+        self.armor = armor
+        self.level = level
+        self.exp = exp
+
+
+
+    def enemylevel(self,level):
+        enemy = [Enemy("Скелет", 10, 10, 10, 5, 5),
+                 Enemy("Зомби", 5, 5, 20, 10, 15),
+                 Enemy("Ведьма", 10, 20, 25, 15, 30),
+                 Enemy("Зомби-Гигант", 15, 25, 35, 25, 50),
+                 Enemy("Джек-Убийца", 30, 35, 55, 35, 65),
+                 Enemy("Маг", 15, 20, 50, 50, 70),
+                 Enemy("Мега-Рыцарь", 45, 50, 70, 65, 100),
+                 Enemy("Падший-Ангел", 70, 90, 90, 85, 120),
+                 Enemy("Демон", 0, 150, 150, 100, 170),
+                 Enemy("Глава-Вампиров", 100, 190, 150, 110, 200),
+                 Enemy("Титан", 150, 300, 250, 130, 300),
+                 ]
+        enemylvl = []
+        bosslevel = max(1,level+random.randint(-1,2))
+        for i in enemy:
+            if i.level == bosslevel:
+                enemylvl.append(i)
+
+
+
+
+        randomch = random.choice(enemylvl)
+        return randomch
+
+
+
+
+            self.hp = 15
+            self.strenght = 1
+            self.agility = 2
+            self.intelekt = 0
+            self.dex = 0
+            self.damage = 2
+            self.armor = 5
+            self.name = "Зомби"
+
+            self.hp = 30
+            self.strenght = 5
+            self.agility = 5
+            self.intelekt = 15
+            self.dex = 0
+            self.damage = 10
+            self.armor = 3
+            self.name = "Ведьма"
+
+            self.hp = 55
+            self.strenght = 5
+            self.agility = 5
+            self.intelekt = 15
+            self.dex = 15
+            self.damage = 25
+            self.armor = 5
+            self.name = "Маг"
+
+            self.hp += 80
+            self.strenght += 5
+            self.agility += 5
+            self.intelekt += 15
+            self.dex += 0
+            self.damage += 10
+            self.armor += 25
+            self.name = "Электро-маг"
+
+            self.hp += 150
+            self.strenght += 100
+            self.agility += 50
+            self.intelekt += 45
+            self.dex += 50
+            self.damage += 100
+            self.armor += 50
+            self.name = "Титан"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
