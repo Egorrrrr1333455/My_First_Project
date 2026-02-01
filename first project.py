@@ -1,4 +1,4 @@
-#создать класс персонажа , продумать его характеристики добавить механику выбора рассы и класса.
+# Импортируем модуль для случайных значений
 import random
 class Human:
     def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor):
@@ -14,6 +14,8 @@ class Human:
         self.dex = dex #Шанс уклонится от атак.
         self.damage = damage #cколько урона мы наносим.
         self.armor = armor #Отрожает урон.
+
+        #Добавляем плюсы расы
     def apply_race(self):
         if self.race == "human":
             self.hp += 10
@@ -72,6 +74,8 @@ class Human:
             self.dex += 5
             self.damage += 30
             self.armor += 10
+
+            #добавляем функцию показа статистик по команде
     def show_stats(self):
         print(f"🙉Имя: {self.name}!")
         print(f"🧨Раса: {self.race}")
@@ -85,6 +89,8 @@ class Human:
         print(f"🐇Ловкость: {self.dex}")
         print(f"🔋Урон: {self.damage}")
         print(f"🧔Броня: {self.armor}")
+
+        #функция прокачки левела
     def level_up(self):
         self.level += 1
         self.hp += 10
@@ -94,6 +100,8 @@ class Human:
         self.intelekt += 5
         self.agility += 3
         print(f"Вы повысили уровень до {self.level}! Вы можете проверить свои статистики.")
+
+        #функция для получение опыта
     def exp(self,exp):
         self.exp += exp
         print(f"Вы получили {exp} Опыта!")
@@ -105,7 +113,7 @@ class Human:
 
 
 
-    def:
+
 class Enemy:
     def __init__(self,damage,armor,intelekt,hp,level,exp,dex,name):
         self.damage = damage
@@ -116,6 +124,8 @@ class Enemy:
         self.exp = exp
         self.dex = dex
         self.name = name
+
+        #Статистика врага
     def show_statss(self):
         print(f"Имя врага: {self.name}")
         print(f"Дамаг: {self.damage}")
@@ -125,9 +135,14 @@ class Enemy:
         print(f"Ловкость:{self.dex}")
         print(f"Броня: {self.armor}")
         print(f"Интелект: {self.intelekt}")
+
+
+        #создаём класс предметов и класс трэйдера
 class Item:
     def __init__(self,name:str,item_tupe:str,value:int,price:float,stats:dict = None):
 class Trader:
+
+    #шансы на трэдеров/торговцов
     chance = {
         "Мечник":{"Шансы":0.2,"имя":"Диабло"},
         "Броник": {"Шансы":0.4,"имя":"Урбан"},
@@ -135,6 +150,9 @@ class Trader:
         "Волшебник": {"Шансы":0.1,"имя":"Пётр"}
 
     }
+
+
+    #предметы , стоимость и названия предметов у тороговцев
     ITEMS = {
         "Мечник": [
             Item("Ржавый меч", "weapon", 5, 50.0),
@@ -154,11 +172,14 @@ class Trader:
             Item("Настойка ловкости", "potion", 0, 120.0, {"dex": 5})
         ]
     }
-
+           #рандомайзер
     def __init__(self,name,tupe):
         if tupe in self.chance:
             self.tupe = tupe
             self.name = self.chance [self.tupe]["имя"]
+
+
+            #Опять же рандомайзер на торговцев
     def shops(self):
         rand = random.randint(0,100)
         if rand <= 20:
@@ -169,6 +190,9 @@ class Trader:
             return "Алхимик"
         elif rand <= 100:
             return "Волшебник"
+
+
+    #создаём рандомные оружия для торговцев
 
     def create_inv(self):
         inv = []
@@ -183,6 +207,9 @@ class Trader:
                 inv.append(item)
         return inv
 
+
+
+       #Оружия)
     ITEMS = {
         "weapon": [
             Item("Ржавый меч", "weapon", 5, 50.0),
@@ -206,12 +233,12 @@ class Trader:
 
         ]
     }
-
+      #класс врага
 class Ennemy:
-    def __init__(self,name,hp,dex,damage,armor,level,strenght,agility,exp):
+    def __init__(self, name, hp, level, exp, strength, agility,  dex, damage, armor):
         self.name = name
         self.hp = hp
-        self.strenght = strenght
+        self.strength = strength
         self.agility = agility
         self.dex = dex
         self.damage = damage
@@ -220,19 +247,20 @@ class Ennemy:
         self.exp = exp
 
 
-
+        #Уровни врага
     def enemylevel(self,level):
-        enemy = [Enemy("Скелет", 10, 10, 10, 5, 5),
-                 Enemy("Зомби", 5, 5, 20, 10, 15),
-                 Enemy("Ведьма", 10, 20, 25, 15, 30),
-                 Enemy("Зомби-Гигант", 15, 25, 35, 25, 50),
-                 Enemy("Джек-Убийца", 30, 35, 55, 35, 65),
-                 Enemy("Маг", 15, 20, 50, 50, 70),
-                 Enemy("Мега-Рыцарь", 45, 50, 70, 65, 100),
-                 Enemy("Падший-Ангел", 70, 90, 90, 85, 120),
-                 Enemy("Демон", 0, 150, 150, 100, 170),
-                 Enemy("Глава-Вампиров", 100, 190, 150, 110, 200),
-                 Enemy("Титан", 150, 300, 250, 130, 300),
+        enemy = [Enemy(3,1,1, 10, 10, 10, 1, "Скелет"),
+                 Enemy(5,1,1, 5, 5, 20, 5, "Зомби"),
+                 Enemy(10, 1,1, 10, 20, 25, 13, "Ведьма"),
+                 Enemy(15, 15, 25, 35, 25, 50,15,"Зомби-Гигант"),
+                 Enemy(20, 30, 35, 55, 35, 65,17,"Джеф-Убийца"),
+                 Enemy(25, 15, 20, 50, 50, 70,18,"Маг"),
+                 Enemy(30, 45, 50, 70, 65, 100,19,"Мега-Рыцарь"),
+                 Enemy(45, 70, 90, 90, 85, 120,22,"Падший-Ангел"),
+                 Enemy(50, 0, 150, 150, 100, 170,25,"Электро-ведьма"),
+                 Enemy(80, 100, 190, 150, 110, 200,25,"Титан"),
+
+
                  ]
         enemylvl = []
         bosslevel = max(1,level+random.randint(-1,2))
@@ -293,6 +321,51 @@ class Ennemy:
             self.damage += 100
             self.armor += 50
             self.name = "Титан"
+
+
+
+def bossdie(enemy):
+    if enemy.hp <= 0:
+        return True
+
+
+def humandie(human):
+    if human.hp <= 0:
+        print(f"вы потерпели поражение😭!")
+        return True
+
+
+
+
+
+
+
+    #битва с босом
+def fight(human,enemy):
+    print(f"Вы встретились с босом! его имя: {enemy.name}! у него {enemy.hp} Здоровья! Это легендарная битва.")
+
+    print(f"Нажмите 1 что бы начать битву! Или нажмите 2 что-бы попытаться сбежать.")
+
+    #выбор человека что он будет делать.
+    vibor = input(f"Введите ваш выбор:")
+    while human.hp > 0 and enemy.hp > 0:
+        if vibor == 1:
+            #Ну типа как они дратся будут
+            vibor_bitvi = input(f"Нажмите 1 что-бы ударить, Нажмите 2 что бы увернутся")
+            if vibor_bitvi == 1:
+                enemy.hp -= human.strenght
+                print(f"Вы ударили врага у него осталось {enemy.hp}!")
+
+                #проверяем живой или мертвый босс
+                enemyliveordie = bossdie(enemy)
+                if enemyliveordie == True:
+                    Human.exp(enemy.exp)
+                    return f"Вы победили врага {enemy.name}"
+
+
+
+
+
 
 
 
