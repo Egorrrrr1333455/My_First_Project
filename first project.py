@@ -336,7 +336,26 @@ def humandie(human):
 
 
 
+def Hit_Chance(enemy,human):
+    hitchance = random.randint(human.dex, human.dex + 15) / 100
+    if hitchance <= enemy.dex:
+        print(f"Вы промахнулись!")
+        return False
+    else:
+        return  True
 
+
+
+
+def enemy_hit_chance(human,enemy):
+
+    enemyhitchance = random.randint(enemy.dex, enemy.dex + 15)/ 100
+    if enemyhitchance <= human.dex:
+        print(f"Враг по вам попал и у вас осталось {human.hp} здоровья")
+        return True
+    else:
+        print(f"Враг не попал! У него осталось {enemy.hp} Здоровья!")
+        return False
 
 
 
@@ -353,14 +372,61 @@ def fight(human,enemy):
             #Ну типа как они дратся будут
             vibor_bitvi = input(f"Нажмите 1 что-бы ударить, Нажмите 2 что бы увернутся")
             if vibor_bitvi == 1:
-                enemy.hp -= human.strenght
-                print(f"Вы ударили врага у него осталось {enemy.hp}!")
+                check =  Hit_Chance(enemy,human)
+                if check == True:
 
-                #проверяем живой или мертвый босс
-                enemyliveordie = bossdie(enemy)
-                if enemyliveordie == True:
-                    Human.exp(enemy.exp)
-                    return f"Вы победили врага {enemy.name}"
+
+                    enemy.hp -= human.strenght
+                    print(f"Вы ударили врага у него осталось {enemy.hp}!")
+
+                    #проверяем живой или мертвый босс
+                    enemyliveordie = bossdie(enemy)
+                    if enemyliveordie == True:
+                        Human.exp(enemy.exp)
+                        return f"Вы победили врага {enemy.name}"
+                else:
+
+                    print(f"Вы не попали по врагу! У него всё ещё {enemy.hp} Здоровья!")
+
+
+
+
+           #Шанс уклона персонажа.
+        dodge_chance = random.randint(1,100)
+
+            #Тем больше ловкость персонажа тем больше шанс уклонится
+        if dodge_chance <= human.dex:
+            print(f"Вы уклонились от атаки {enemy.name}") #Уклонился
+            continue
+
+        #else:
+
+            enemy_damage =
+            human.hp -= enemy_damage
+            print(f"{enemy.name} попал и нанёс {enemy.damage} урона! у вас осталось {human.hp} ХП.")
+
+
+
+
+        if enemy.hp > 0:
+            savee = enemy_hit_chance(human,enemy)
+            if savee == True:
+                human.hp -= enemy.damage
+                print(f"{enemy.name} попал и нанёс {enemy.damage} урона! у вас осталось {human.hp} здоровье.")
+                continue
+            else:
+                print(f"Вы увернулись!")
+                continue
+
+
+
+
+
+
+
+
+
+
 
 
 
