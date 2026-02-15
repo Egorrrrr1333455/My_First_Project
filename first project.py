@@ -233,6 +233,15 @@ class Trader:
 
         ]
     }
+
+    def Show_inv_trader(self,Trader):
+        for i,j in enumerate(self.inv,0):
+            print(f"{i} {j.name} {j.price}")
+
+
+
+
+
       #класс врага
 class Ennemy:
     def __init__(self, name, hp, level, exp, strength, agility,  dex, damage, armor):
@@ -376,6 +385,9 @@ def fight(human,enemy):
                 if check == True:
 
 
+
+
+
                     enemy.hp -= human.strenght
                     print(f"Вы ударили врага у него осталось {enemy.hp}!")
 
@@ -420,19 +432,25 @@ def fight(human,enemy):
 
 
 
+def events(human):
+    events_spisok = ["озеро","торговец","Битва","Сундук","Цветок","Зелье опыта"]
+        #цветок - лечебный
+       eventss = random.choice(events_spisok)
+        if eventss == "озеро":
+            print(f"Вы нашли Волшебное Озеро ! Оно вам восстановит чу-чуть здоровья! ")
+            human.hp += 5
+            print(f"Вы восстановили здоровье! Теперь у вас {human.hp} Здоровья!")
 
-
-
-
-
-
-
-
-
-
-
-
-
+        elif eventss == "торговец":
+             print(f"Вы встретили торговца!")
+             Torgovec = Trader()
+             while True:
+                 Torgovec.Show_inv_trader()
+                 vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
+                 if vopros == 1:
+                     #Тут будет код!!!!!!!!!!!
+                 elif vopros == 2:
+                     break
 
 
 
