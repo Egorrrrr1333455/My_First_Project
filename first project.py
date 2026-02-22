@@ -1,7 +1,7 @@
 # Импортируем модуль для случайных значений
 import random
 class Human:
-    def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor,money):
+    def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor,money,inv):
         self.name = name
         self.race = race
         self.clas = clas
@@ -14,7 +14,10 @@ class Human:
         self.dex = dex #Шанс уклонится от атак.
         self.damage = damage #cколько урона мы наносим.
         self.armor = armor #Отрожает урон.
-        self.money = money
+        self.money = money #Деньги игрока
+        self.inv = [] #Инвентарь игрока
+        self.maxhp = hp #Макс хп
+        self.timebuff = 0 #Отвечает за количевство битв с баффом
 
         #Добавляем плюсы расы
     def apply_race(self):
@@ -111,6 +114,34 @@ class Human:
             self.exp -= 50
             x += 1
         print(f"Получено {x} Уровней!")
+
+    def show_inv(self):
+        for i,j in enumerate(self.inv,0):
+            print(f"{i} {j.name} {j.price} ")
+
+    def use_item(self,num):
+        item = self.inv[num]
+        if item.item_tupe == "heal":
+            if self.hp == self.maxhp:
+                print(f"У вам максимальное количевство здоровья!")
+            elif self.maxhp < self.hp <= item.value:
+                self.hp = self.maxhp
+                print(f"Вы потеряли своё зелье! У вас максимальное количевство здоровья")
+            else:
+                self.hp += item.value
+                print(f"Вы потеряли своё зелье и восстановили {item.value} здоровья! У вас теперь {self.hp} Здоровья!!!")
+
+            self.inv.remove(item)
+        elif item.item_tupe == "buff":
+            if item in self.inv:
+                if "Сила" in item.name:
+                    self.damage += 4
+                    self.timebuff = 2
+                    item.remove(item)
+                    print(f"Вы использовали зелье силы! к вашему урону добавилось 4 единицы! Это будет длится 2 боя!")
+
+
+
 
 
 
