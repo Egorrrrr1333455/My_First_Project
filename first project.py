@@ -1,7 +1,7 @@
 # Импортируем модуль для случайных значений
 import random
 class Human:
-    def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor):
+    def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor,money):
         self.name = name
         self.race = race
         self.clas = clas
@@ -14,6 +14,7 @@ class Human:
         self.dex = dex #Шанс уклонится от атак.
         self.damage = damage #cколько урона мы наносим.
         self.armor = armor #Отрожает урон.
+        self.money = money
 
         #Добавляем плюсы расы
     def apply_race(self):
@@ -433,7 +434,7 @@ def fight(human,enemy):
 
 
 def events(human):
-    events_spisok = ["озеро","торговец","Битва","Сундук","Цветок","Зелье опыта"]
+    events_spisok = ["озеро","торговец","Битва","Сундук","Цветок"]
         #цветок - лечебный
        eventss = random.choice(events_spisok)
         if eventss == "озеро":
@@ -451,6 +452,23 @@ def events(human):
                      #Тут будет код!!!!!!!!!!!
                  elif vopros == 2:
                      break
+
+        elif eventss == "Битва":
+            print(f"⚔️ Вы встретили врага!")
+            enemy = Ennemy().enemylevel(human.level) #Ну вообщем это генерация подходящего босса под уровень нашего игрока.
+
+        elif eventss == "Сундук":
+            print(f"💰Вы нашли сундук!")
+            money_found = random.randint(10,50)
+            human.money += money_found
+            print(f"Вы нашли {money_found} монет! 💰")
+
+        elif eventss == "Цветок":
+            print(f"🌸Вы нашли волшебный цветок!")
+            heal = random.randint(5,20)
+            human.hp += heal
+            print(f"🌸Цветок вам восстановил {heal} Здоровья! Теперь у вас {human.hp} Здоровья!!!")
+
 
 
 
