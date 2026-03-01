@@ -139,7 +139,21 @@ class Human:
                     self.timebuff = 2
                     item.remove(item)
                     print(f"Вы использовали зелье силы! к вашему урону добавилось 4 единицы! Это будет длится 2 боя!")
+        elif item.item_tupe == "Зелье ловкости":
+            self.dex += 5
+            self.timebuff += 2
+            print(f"Вы использовали зелье ловкости!!!")
+            self.inv.remove(item)
 
+        elif item.item_tupe == "armor":
+            self.damage += item.value
+            print(f"Вы успешно одели {item.name}! Броня увеличена на {item.value}!")
+            self.inv.remove(item)
+
+        elif item.item_tupe == "weapon":
+            self.damage += item.value
+            print(f"Вы успешно взяли {item.name}! Урон увеличен на {item.value}!!! ")
+            self.inv.remove(item)
 
 
 
