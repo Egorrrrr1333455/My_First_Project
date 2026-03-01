@@ -1,5 +1,6 @@
 # Импортируем модуль для случайных значений
 import random
+from enum import Enum
 class Human:
     def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor,money,inv):
         self.name = name
@@ -182,10 +183,72 @@ class Enemy:
         print(f"Броня: {self.armor}")
         print(f"Интелект: {self.intelekt}")
 
+class Rarity(Enum):
+    rare = "Редкий"
+    epic = "Эпический"
+    mythic = "Мифический"
+    legendary = "Легендарный"
 
-        #создаём класс предметов и класс трэйдера
+
 class Item:
-    def __init__(self,name:str,item_tupe:str,value:int,price:float,stats:dict = None):
+    def __init__(self,name:str,item_tupe:str,value:int,price:float,rarity:str,stats:dict = None): #создаём класс предметов и класс трэйдера
+        self.name = name
+        self.item_tupe = item_tupe
+        self.value = value
+        self.price = price
+        self.rarity = rarity
+    def generation_item(self,level,item_tupe):
+        chance_random_item = random.randint(1,100)
+        if level <= 15:
+            if chance_random_item <= 5:
+                rarityy = Rarity.legendary
+                price_multy = 3
+                value_multy = 3
+            elif chance_random_item <= 13:
+                rarityy = Rarity.mythic
+                price_multy = 1.8
+                value_multy = 1.4
+            elif chance_random_item <= 15:
+                rarityy = Rarity.epic
+                price_multy = 1.5
+                value_multy = 1.2
+            else:
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 0.6
+
+
+        elif level <= 29:
+            if chance_random_item <= 8:
+                rarityy = Rarity.legendary
+                price_multy = 3
+                value_multy = 3
+            elif chance_random_item <= 19:
+                rarityy = Rarity.mythic
+                price_multy = 1.8
+                value_multy = 1.4
+            elif chance_random_item <= 25:
+                rarityy = Rarity.epic
+                price_multy = 1.5
+                value_multy = 1.2
+            else:
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 0.6
+
+        value = self.value * value_multy
+        price = self.price * price_multy
+        all_buffs = ["Ловкости","Силы"]
+        random_buff = random.choice(all_buffs)
+        if item_tupe == "heal":
+            name = "Зелье исцеления"
+        elif item_tupe == "buff":
+            name = f"Зелье {random_buff}"
+        elif item_tupe == "weapon":
+            name = f"{rarityy} Меч!"
+        else:
+            name = f"{rarityy} Броня"
+        return Item(name,item_tupe,value,price,rarityy)
 class Trader:
 
     #шансы на трэдеров/торговцов
@@ -201,21 +264,22 @@ class Trader:
     #предметы , стоимость и названия предметов у тороговцев
     ITEMS = {
         "Мечник": [
-            Item("Ржавый меч", "weapon", 5, 50.0),
-            Item("Стальной клинок", "weapon", 10, 150.0),
-            Item("Эльфийский лук", "weapon", 15, 300.0),
-            Item("Магический посох", "weapon", 20, 500.0)
+            Item.generation_item(level=15,item_tupe="weapon"),
+            Item.generation_item(level=29, item_tupe="weapon"),
+            Item.generation_item(level=39, item_tupe="weapon"),
+            Item.generation_item(level=50, item_tupe="weapon")
         ],
         "Броник": [
-            Item("Кожаная броня", "armor", 5, 50.0),
-            Item("Кольчуга", "armor", 10, 150.0),
-            Item("Латные доспехи", "armor", 15, 300.0),
-            Item("Магические одежды", "armor", 20, 500.0)
+            Item.generation_item(level=15,item_tupe="armor"),
+            Item.generation_item(level=29, item_tupe="armor"),
+            Item.generation_item(level=39, item_tupe="armor"),
+            Item.generation_item(level=50, item_tupe="armor")
         ],
         "Алхимик": [
-            Item("Зелье здоровья", "potion", 50, 100.0),
-            Item("Эликсир силы", "potion", 0, 150.0, {"strength": 5}),
-            Item("Настойка ловкости", "potion", 0, 120.0, {"dex": 5})
+            Item.generation_item(level=15, item_tupe="buff"),
+            Item.generation_item(level=29, item_tupe="buff"),
+            Item.generation_item(level=39, item_tupe="buff"),
+            Item.generation_item(level=50, item_tupe="buff")
         ]
     }
            #рандомайзер
