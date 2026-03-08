@@ -1,26 +1,29 @@
 # Импортируем модуль для случайных значений
 import random
 from enum import Enum
+
+
 class Human:
-    def __init__(self,name,race,clas,level,exp,hp,strenght,agility,intelekt,dex,damage,armor,money,inv):
+    def __init__(self, name, race, clas, level, exp, hp, strenght, agility, intelekt, dex, damage, armor, money, inv):
         self.name = name
         self.race = race
         self.clas = clas
         self.level = level
-        self.exp = exp #
-        self.hp = hp #Здоровье
-        self.strenght = strenght #тем больше сила,больше хп и урона будет.
-        self.agility = agility #Если устанем,будет шанс промахнутся по сопернику.
-        self.intelekt = intelekt #Обмануть торговца
-        self.dex = dex #Шанс уклонится от атак.
-        self.damage = damage #cколько урона мы наносим.
-        self.armor = armor #Отрожает урон.
-        self.money = money #Деньги игрока
-        self.inv = [] #Инвентарь игрока
-        self.maxhp = hp #Макс хп
-        self.timebuff = 0 #Отвечает за количевство битв с баффом
+        self.exp = exp  #
+        self.hp = hp  # Здоровье
+        self.strenght = strenght  # тем больше сила,больше хп и урона будет.
+        self.agility = agility  # Если устанем,будет шанс промахнутся по сопернику.
+        self.intelekt = intelekt  # Обмануть торговца
+        self.dex = dex  # Шанс уклонится от атак.
+        self.damage = damage  # cколько урона мы наносим.
+        self.armor = armor  # Отрожает урон.
+        self.money = money  # Деньги игрока
+        self.inv = []  # Инвентарь игрока
+        self.maxhp = hp  # Макс хп
+        self.timebuff = 0  # Отвечает за количевство битв с баффом
 
-        #Добавляем плюсы расы
+        # Добавляем плюсы расы
+
     def apply_race(self):
         if self.race == "human":
             self.hp += 10
@@ -54,6 +57,7 @@ class Human:
             self.dex += 20
             self.damage += 50
             self.armor += 40
+
     def clas(self):
         if self.clas == "guardian":
             self.hp += 20
@@ -80,7 +84,8 @@ class Human:
             self.damage += 30
             self.armor += 10
 
-            #добавляем функцию показа статистик по команде
+            # добавляем функцию показа статистик по команде
+
     def show_stats(self):
         print(f"🙉Имя: {self.name}!")
         print(f"🧨Раса: {self.race}")
@@ -95,7 +100,8 @@ class Human:
         print(f"🔋Урон: {self.damage}")
         print(f"🧔Броня: {self.armor}")
 
-        #функция прокачки левела
+        # функция прокачки левела
+
     def level_up(self):
         self.level += 1
         self.hp += 10
@@ -106,8 +112,9 @@ class Human:
         self.agility += 3
         print(f"Вы повысили уровень до {self.level}! Вы можете проверить свои статистики.")
 
-        #функция для получение опыта
-    def exp(self,exp):
+        # функция для получение опыта
+
+    def exp(self, exp):
         self.exp += exp
         print(f"Вы получили {exp} Опыта!")
         x = 0
@@ -117,10 +124,10 @@ class Human:
         print(f"Получено {x} Уровней!")
 
     def show_inv(self):
-        for i,j in enumerate(self.inv,0):
+        for i, j in enumerate(self.inv, 0):
             print(f"{i} {j.name} {j.price} ")
 
-    def use_item(self,num):
+    def use_item(self, num):
         item = self.inv[num]
         if item.item_tupe == "heal":
             if self.hp == self.maxhp:
@@ -130,7 +137,8 @@ class Human:
                 print(f"Вы потеряли своё зелье! У вас максимальное количевство здоровья")
             else:
                 self.hp += item.value
-                print(f"Вы потеряли своё зелье и восстановили {item.value} здоровья! У вас теперь {self.hp} Здоровья!!!")
+                print(
+                    f"Вы потеряли своё зелье и восстановили {item.value} здоровья! У вас теперь {self.hp} Здоровья!!!")
 
             self.inv.remove(item)
         elif item.item_tupe == "buff":
@@ -157,12 +165,8 @@ class Human:
             self.inv.remove(item)
 
 
-
-
-
-
 class Enemy:
-    def __init__(self,damage,armor,intelekt,hp,level,exp,dex,name):
+    def __init__(self, damage, armor, intelekt, hp, level, exp, dex, name):
         self.damage = damage
         self.armor = armor
         self.intelekt = intelekt
@@ -172,7 +176,8 @@ class Enemy:
         self.dex = dex
         self.name = name
 
-        #Статистика врага
+        # Статистика врага
+
     def show_statss(self):
         print(f"Имя врага: {self.name}")
         print(f"Дамаг: {self.damage}")
@@ -183,6 +188,7 @@ class Enemy:
         print(f"Броня: {self.armor}")
         print(f"Интелект: {self.intelekt}")
 
+
 class Rarity(Enum):
     rare = "Редкий"
     epic = "Эпический"
@@ -191,14 +197,16 @@ class Rarity(Enum):
 
 
 class Item:
-    def __init__(self,name:str,item_tupe:str,value:int,price:float,rarity:str,stats:dict = None): #создаём класс предметов и класс трэйдера
+    def __init__(self, name: str, item_tupe: str, value: int, price: float, rarity: str,
+                 stats: dict = None):  # создаём класс предметов и класс трэйдера
         self.name = name
         self.item_tupe = item_tupe
         self.value = value
         self.price = price
         self.rarity = rarity
-    def generation_item(self,level,item_tupe):
-        chance_random_item = random.randint(1,100)
+
+    def generation_item(self, level, item_tupe):
+        chance_random_item = random.randint(1, 100)
         if level <= 15:
             if chance_random_item <= 5:
                 rarityy = Rarity.legendary
@@ -238,7 +246,7 @@ class Item:
 
         value = self.value * value_multy
         price = self.price * price_multy
-        all_buffs = ["Ловкости","Силы"]
+        all_buffs = ["Ловкости", "Силы"]
         random_buff = random.choice(all_buffs)
         if item_tupe == "heal":
             name = "Зелье исцеления"
@@ -248,29 +256,29 @@ class Item:
             name = f"{rarityy} Меч!"
         else:
             name = f"{rarityy} Броня"
-        return Item(name,item_tupe,value,price,rarityy)
-class Trader:
+        return Item(name, item_tupe, value, price, rarityy)
 
-    #шансы на трэдеров/торговцов
+
+class Trader:
+    # шансы на трэдеров/торговцов
     chance = {
-        "Мечник":{"Шансы":0.2,"имя":"Диабло"},
-        "Броник": {"Шансы":0.4,"имя":"Урбан"},
-        "Алхимик": {"Шансы":0.3,"имя":"Александр"},
-        "Волшебник": {"Шансы":0.1,"имя":"Пётр"}
+        "Мечник": {"Шансы": 0.2, "имя": "Диабло"},
+        "Броник": {"Шансы": 0.4, "имя": "Урбан"},
+        "Алхимик": {"Шансы": 0.3, "имя": "Александр"},
+        "Волшебник": {"Шансы": 0.1, "имя": "Пётр"}
 
     }
 
-
-    #предметы , стоимость и названия предметов у тороговцев
+    # предметы , стоимость и названия предметов у тороговцев
     ITEMS = {
         "Мечник": [
-            Item.generation_item(level=15,item_tupe="weapon"),
+            Item.generation_item(level=15, item_tupe="weapon"),
             Item.generation_item(level=29, item_tupe="weapon"),
             Item.generation_item(level=39, item_tupe="weapon"),
             Item.generation_item(level=50, item_tupe="weapon")
         ],
         "Броник": [
-            Item.generation_item(level=15,item_tupe="armor"),
+            Item.generation_item(level=15, item_tupe="armor"),
             Item.generation_item(level=29, item_tupe="armor"),
             Item.generation_item(level=39, item_tupe="armor"),
             Item.generation_item(level=50, item_tupe="armor")
@@ -282,16 +290,17 @@ class Trader:
             Item.generation_item(level=50, item_tupe="buff")
         ]
     }
-           #рандомайзер
-    def __init__(self,name,tupe):
+
+    # рандомайзер
+    def __init__(self, name, tupe):
         if tupe in self.chance:
             self.tupe = tupe
-            self.name = self.chance [self.tupe]["имя"]
+            self.name = self.chance[self.tupe]["имя"]
 
+            # Опять же рандомайзер на торговцев
 
-            #Опять же рандомайзер на торговцев
     def shops(self):
-        rand = random.randint(0,100)
+        rand = random.randint(0, 100)
         if rand <= 20:
             return "Мечник"
         elif rand <= 60:
@@ -301,59 +310,54 @@ class Trader:
         elif rand <= 100:
             return "Волшебник"
 
-
-    #создаём рандомные оружия для торговцев
+    # создаём рандомные оружия для торговцев
 
     def create_inv(self):
         inv = []
         special_items = []
         if self.tupe in self.ITEMS:
-            special_items = self.ITEMS [self.tupe]
+            special_items = self.ITEMS[self.tupe]
 
-        cifras = random.randint(3,5)
+        cifras = random.randint(3, 5)
         for i in range(cifras):
             if special_items == True:
                 item = random.choice(special_items)
                 inv.append(item)
         return inv
 
-
-
-       #Оружия)
+    # Оружия)
     ITEMS = {
         "weapon": [
-            Item.generation_item(level=15,item_tupe="weapon"),
-            Item.generation_item(level=29,item_tupe="weapon"),
-            Item.generation_item(level=35,item_tupe="weapon"),
-            Item.generation_item(level=45,item_tupe="weapon"),
-            Item.generation_item(level=60,item_tupe="weapon")
+            Item.generation_item(level=15, item_tupe="weapon"),
+            Item.generation_item(level=29, item_tupe="weapon"),
+            Item.generation_item(level=35, item_tupe="weapon"),
+            Item.generation_item(level=45, item_tupe="weapon"),
+            Item.generation_item(level=60, item_tupe="weapon")
         ],
         "armor": [
             Item.generation_item(level=15, item_tupe="armor"),
             Item.generation_item(level=29, item_tupe="armor"),
             Item.generation_item(level=35, item_tupe="armor"),
-            Item.generation_item(level=45, item_tupe="armor")
+            Item.generation_item(level=45, item_tupe="armor"),
             Item.generation_item(level=60, item_tupe="armor"),
         ],
         "potion": [
-            Item.generation_item(level=15,item_tupe="heal"),
-            Item.generation_item(level=15,item_tupe="buff"),
-            Item.generation_item(level=15,item_tupe="buff"),
+            Item.generation_item(level=15, item_tupe="heal"),
+            Item.generation_item(level=29, item_tupe="buff"),
+            Item.generation_item(level=39, item_tupe="buff"),
 
         ]
     }
 
-    def Show_inv_trader(self,Trader):
-        for i,j in enumerate(self.inv,0):
+    def Show_inv_trader(self, Trader):
+        for i, j in enumerate(self.inv, 0):
             print(f"{i} {j.name} {j.price}")
 
+    # класс врага
 
 
-
-
-      #класс врага
 class Ennemy:
-    def __init__(self, name, hp, level, exp, strength, agility,  dex, damage, armor):
+    def __init__(self, name, hp, level, exp, strength, agility, dex, damage, armor):
         self.name = name
         self.hp = hp
         self.strength = strength
@@ -364,82 +368,74 @@ class Ennemy:
         self.level = level
         self.exp = exp
 
+        # Уровни врага
 
-        #Уровни врага
-    def enemylevel(self,level):
-        enemy = [Enemy(3,1,1, 10, 10, 10, 1, "Скелет"),
-                 Enemy(5,1,1, 5, 5, 20, 5, "Зомби"),
-                 Enemy(10, 1,1, 10, 20, 25, 13, "Ведьма"),
-                 Enemy(15, 15, 25, 35, 25, 50,15,"Зомби-Гигант"),
-                 Enemy(20, 30, 35, 55, 35, 65,17,"Джеф-Убийца"),
-                 Enemy(25, 15, 20, 50, 50, 70,18,"Маг"),
-                 Enemy(30, 45, 50, 70, 65, 100,19,"Мега-Рыцарь"),
-                 Enemy(45, 70, 90, 90, 85, 120,22,"Падший-Ангел"),
-                 Enemy(50, 0, 150, 150, 100, 170,25,"Электро-ведьма"),
-                 Enemy(80, 100, 190, 150, 110, 200,25,"Титан"),
-
+    def enemylevel(self, level):
+        enemy = [Enemy(3, 1, 1, 10, 10, 10, 1, "Скелет"),
+                 Enemy(5, 1, 1, 5, 5, 20, 5, "Зомби"),
+                 Enemy(10, 1, 1, 10, 20, 25, 13, "Ведьма"),
+                 Enemy(15, 15, 25, 35, 25, 50, 15, "Зомби-Гигант"),
+                 Enemy(20, 30, 35, 55, 35, 65, 17, "Джеф-Убийца"),
+                 Enemy(25, 15, 20, 50, 50, 70, 18, "Маг"),
+                 Enemy(30, 45, 50, 70, 65, 100, 19, "Мега-Рыцарь"),
+                 Enemy(45, 70, 90, 90, 85, 120, 22, "Падший-Ангел"),
+                 Enemy(50, 0, 150, 150, 100, 170, 25, "Электро-ведьма"),
+                 Enemy(80, 100, 190, 150, 110, 200, 25, "Титан"),
 
                  ]
         enemylvl = []
-        bosslevel = max(1,level+random.randint(-1,2))
+        bosslevel = max(1, level + random.randint(-1, 2))
         for i in enemy:
             if i.level == bosslevel:
                 enemylvl.append(i)
 
-
-
-
         randomch = random.choice(enemylvl)
         return randomch
 
+        self.hp = 15
+        self.strenght = 1
+        self.agility = 2
+        self.intelekt = 0
+        self.dex = 0
+        self.damage = 2
+        self.armor = 5
+        self.name = "Зомби"
 
+        self.hp = 30
+        self.strenght = 5
+        self.agility = 5
+        self.intelekt = 15
+        self.dex = 0
+        self.damage = 10
+        self.armor = 3
+        self.name = "Ведьма"
 
+        self.hp = 55
+        self.strenght = 5
+        self.agility = 5
+        self.intelekt = 15
+        self.dex = 15
+        self.damage = 25
+        self.armor = 5
+        self.name = "Маг"
 
-            self.hp = 15
-            self.strenght = 1
-            self.agility = 2
-            self.intelekt = 0
-            self.dex = 0
-            self.damage = 2
-            self.armor = 5
-            self.name = "Зомби"
+        self.hp += 80
+        self.strenght += 5
+        self.agility += 5
+        self.intelekt += 15
+        self.dex += 0
+        self.damage += 10
+        self.armor += 25
+        self.name = "Электро-маг"
 
-            self.hp = 30
-            self.strenght = 5
-            self.agility = 5
-            self.intelekt = 15
-            self.dex = 0
-            self.damage = 10
-            self.armor = 3
-            self.name = "Ведьма"
-
-            self.hp = 55
-            self.strenght = 5
-            self.agility = 5
-            self.intelekt = 15
-            self.dex = 15
-            self.damage = 25
-            self.armor = 5
-            self.name = "Маг"
-
-            self.hp += 80
-            self.strenght += 5
-            self.agility += 5
-            self.intelekt += 15
-            self.dex += 0
-            self.damage += 10
-            self.armor += 25
-            self.name = "Электро-маг"
-
-            self.hp += 150
-            self.strenght += 100
-            self.agility += 50
-            self.intelekt += 45
-            self.dex += 50
-            self.damage += 100
-            self.armor += 50
-            self.name = "Титан"
-
+        self.hp += 150
+        self.strenght += 100
+        self.agility += 50
+        self.intelekt += 45
+        self.dex += 50
+        self.damage += 100
+        self.armor += 50
+        self.name = "Титан"
 
 
 def bossdie(enemy):
@@ -453,21 +449,17 @@ def humandie(human):
         return True
 
 
-
-def Hit_Chance(enemy,human):
+def Hit_Chance(enemy, human):
     hitchance = random.randint(human.dex, human.dex + 15) / 100
     if hitchance <= enemy.dex:
         print(f"Вы промахнулись!")
         return False
     else:
-        return  True
+        return True
 
 
-
-
-def enemy_hit_chance(human,enemy):
-
-    enemyhitchance = random.randint(enemy.dex, enemy.dex + 15)/ 100
+def enemy_hit_chance(human, enemy):
+    enemyhitchance = random.randint(enemy.dex, enemy.dex + 15) / 100
     if enemyhitchance <= human.dex:
         print(f"Враг по вам попал и у вас осталось {human.hp} здоровья")
         return True
@@ -475,32 +467,28 @@ def enemy_hit_chance(human,enemy):
         print(f"Враг не попал! У него осталось {enemy.hp} Здоровья!")
         return False
 
+    # битва с босом
 
 
-    #битва с босом
-def fight(human,enemy):
+def fight(human, enemy):
     print(f"Вы встретились с босом! его имя: {enemy.name}! у него {enemy.hp} Здоровья! Это легендарная битва.")
 
     print(f"Нажмите 1 что бы начать битву! Или нажмите 2 что-бы попытаться сбежать.")
 
-    #выбор человека что он будет делать.
+    # выбор человека что он будет делать.
     vibor = input(f"Введите ваш выбор:")
     while human.hp > 0 and enemy.hp > 0:
         if vibor == 1:
-            #Ну типа как они дратся будут
+            # Ну типа как они дратся будут
             vibor_bitvi = input(f"Нажмите 1 что-бы ударить, Нажмите 2 что бы увернутся")
             if vibor_bitvi == 1:
-                check =  Hit_Chance(enemy,human)
+                check = Hit_Chance(enemy, human)
                 if check == True:
-
-
-
-
 
                     enemy.hp -= human.strenght
                     print(f"Вы ударили врага у него осталось {enemy.hp}!")
 
-                    #проверяем живой или мертвый босс
+                    # проверяем живой или мертвый босс
                     enemyliveordie = bossdie(enemy)
                     if enemyliveordie == True:
                         Human.exp(enemy.exp)
@@ -509,28 +497,22 @@ def fight(human,enemy):
 
                     print(f"Вы не попали по врагу! У него всё ещё {enemy.hp} Здоровья!")
 
+        # Шанс уклона персонажа.
+        dodge_chance = random.randint(1, 100)
 
-
-
-           #Шанс уклона персонажа.
-        dodge_chance = random.randint(1,100)
-
-            #Тем больше ловкость персонажа тем больше шанс уклонится
+        # Тем больше ловкость персонажа тем больше шанс уклонится
         if dodge_chance <= human.dex:
-            print(f"Вы уклонились от атаки {enemy.name}") #Уклонился
+            print(f"Вы уклонились от атаки {enemy.name}")  # Уклонился
             continue
 
-        #else:
-
-            enemy_damage =
-            human.hp -= enemy_damage
-            print(f"{enemy.name} попал и нанёс {enemy.damage} урона! у вас осталось {human.hp} ХП.")
-
-
-
+            # else:
+            #
+            # enemy_damage =
+            # human.hp -= enemy_damage
+            # print(f"{enemy.name} попал и нанёс {enemy.damage} урона! у вас осталось {human.hp} ХП.")
 
         if enemy.hp > 0:
-            savee = enemy_hit_chance(human,enemy)
+            savee = enemy_hit_chance(human, enemy)
             if savee == True:
                 human.hp -= enemy.damage
                 print(f"{enemy.name} попал и нанёс {enemy.damage} урона! у вас осталось {human.hp} здоровье.")
@@ -540,55 +522,95 @@ def fight(human,enemy):
                 continue
 
 
-
 def events(human):
-    events_spisok = ["озеро","торговец","Битва","Сундук","Цветок"]
-        #цветок - лечебный
-       eventss = random.choice(events_spisok)
-        if eventss == "озеро":
-            print(f"Вы нашли Волшебное Озеро ! Оно вам восстановит чу-чуть здоровья! ")
-            human.hp += 5
-            print(f"Вы восстановили здоровье! Теперь у вас {human.hp} Здоровья!")
+    events_spisok = ["озеро", "торговец", "Битва", "Сундук", "Цветок"]
+    # цветок - лечебный
+    eventss = random.choice(events_spisok)
+    if eventss == "озеро":
+        print(f"Вы нашли Волшебное Озеро ! Оно вам восстановит чу-чуть здоровья! ")
+        human.hp += 5
+        print(f"Вы восстановили здоровье! Теперь у вас {human.hp} Здоровья!")
 
-        elif eventss == "торговец":
-             print(f"Вы встретили торговца!")
-             Torgovec = Trader()
-             while True:
-                 Torgovec.Show_inv_trader()
-                 vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
-                 if vopros == 1:
-                     #Тут будет код!!!!!!!!!!!
-                 elif vopros == 2:
-                     break
+    elif eventss == "торговец":
+        print(f"Вы встретили торговца!")
+        Torgovec = Trader()
+        while True:
+            Torgovec.Show_inv_trader()
+            vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
+            if vopros == 1:
+                pass
+            # Тут будет код!!!!!!!!!!!
+            elif vopros == 2:
+                break
 
-        elif eventss == "Битва":
-            print(f"⚔️ Вы встретили врага!")
-            enemy = Ennemy().enemylevel(human.level) #Ну вообщем это генерация подходящего босса под уровень нашего игрока.
+    elif eventss == "Битва":
+        print(f"⚔️ Вы встретили врага!")
+        enemy = Ennemy().enemylevel(
+            human.level)  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
 
-        elif eventss == "Сундук":
-            print(f"💰Вы нашли сундук!")
-            money_found = random.randint(10,50)
-            human.money += money_found
-            print(f"Вы нашли {money_found} монет! 💰")
+    elif eventss == "Сундук":
+        print(f"💰Вы нашли сундук!")
+        money_found = random.randint(10, 50)
+        human.money += money_found
+        print(f"Вы нашли {money_found} монет! 💰")
 
-        elif eventss == "Цветок":
-            print(f"🌸Вы нашли волшебный цветок!")
-            heal = random.randint(5,20)
-            human.hp += heal
-            print(f"🌸Цветок вам восстановил {heal} Здоровья! Теперь у вас {human.hp} Здоровья!!!")
-
-
-
-
+    elif eventss == "Цветок":
+        print(f"🌸Вы нашли волшебный цветок!")
+        heal = random.randint(5, 20)
+        human.hp += heal
+        print(f"🌸Цветок вам восстановил {heal} Здоровья! Теперь у вас {human.hp} Здоровья!!!")
 
 
+def Games():
+    print(f"Здравствуйте! Вы - путешественик ! На вашем пути будет происходить много событий. Удачи!")
+    quest = input("Введите имя вашего персонажа:")
+    print(f"Ввыберите вашу расу: 1 - Хюман , 2 - Ангел , 3 - Минк , 4 - Киборг.")
+    race_choice = input("Введите свой выбор:")
+    race_dict = {"1": "Human", "2": "Angel", "3": "Mink", "4": "Cyborg"}
+    race = race_dict.get(race_choice, "Human")
+
+    quest1 = input("Ввыберите свой класс:")
+    print(f"Ввыберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
+    clas_choice = input("Введите ваш выбор:")
+    clas_dict = {"1": "Guardian", "2": "archor", "3": "Witch"}
+    classs = clas_dict.get(clas_choice, "archor")
+
+    player = Human(name=quest, race=race, clas=classs, level=1, exp=0, hp=50, strenght=10, agility=10, intelekt=5,
+                   dex=0, damage=5, armor=5, money=1000, inv=[])
+    player.show_stats()
+    while True:
+        print(f"Игра начата.")
+        print(f"\n{"-" * 50}")
+        print("\n1 - Продолжить путешевствие ")
+        print("2 - Показать статистику ")
+        print("3 - Показать инвентарь ")
+        print("4 - Использовать предмет ")
+        print("5 - Выйти из игры ")
+        quest2 = input("Введите свой выбор:")
+
+        if quest2 == 1:
+            events(player)
+        elif quest2 == 2:
+            player.show_stats()
+        elif quest2 == 3:
+            player.show_inv()
+        elif quest2 == 4:
+            if player.inv:
+                player.show_inv()
+                index_item = int(input("Введите номер предмета:"))
+                player.use_item(index_item)
+            else:
+                print(f"Ваш инвентарь пуст.")
+
+        elif quest2 == 5:
+            print(f"Спасибо что играли.")
+            break
+        else:
+            print(f"Введите другое число.")
+
+        if player.hp <= 0:
+            print("Игра окончена. Вы трагически погибли.")
+            break
 
 
-
-
-
-
-
-
-
-
+Games()
