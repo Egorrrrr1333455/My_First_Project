@@ -322,24 +322,23 @@ class Trader:
        #Оружия)
     ITEMS = {
         "weapon": [
-            Item("Ржавый меч", "weapon", 5, 50.0),
-            Item("Стальной клинок", "weapon", 10, 150.0),
-            Item("Эльфийский лук", "weapon", 15, 300.0),
-            Item("Магический посох", "weapon", 20, 500.0),
-            Item("Сабля","weapon", 5, 300.0),
-            Item("Двойная Катана", "weapon", 25 , 700.0),
-            Item("Меч дракона", "weapon",100, 1500.0)
+            Item.generation_item(level=15,item_tupe="weapon"),
+            Item.generation_item(level=29,item_tupe="weapon"),
+            Item.generation_item(level=35,item_tupe="weapon"),
+            Item.generation_item(level=45,item_tupe="weapon"),
+            Item.generation_item(level=60,item_tupe="weapon")
         ],
         "armor": [
-            Item("Кожаная броня", "armor", 5, 50.0),
-            Item("Кольчуга", "armor", 10, 150.0),
-            Item("Латные доспехи", "armor", 15, 300.0),
-            Item("Магические одежды", "armor", 20, 500.0)
+            Item.generation_item(level=15, item_tupe="armor"),
+            Item.generation_item(level=29, item_tupe="armor"),
+            Item.generation_item(level=35, item_tupe="armor"),
+            Item.generation_item(level=45, item_tupe="armor")
+            Item.generation_item(level=60, item_tupe="armor"),
         ],
         "potion": [
-            Item("Зелье здоровья", "potion", 50, 100.0),
-            Item("Эликсир силы", "potion", 0, 150.0, {"strength": 5}),
-            Item("Настойка ловкости", "potion", 0, 120.0, {"dex": 5})
+            Item.generation_item(level=15,item_tupe="heal"),
+            Item.generation_item(level=15,item_tupe="buff"),
+            Item.generation_item(level=15,item_tupe="buff"),
 
         ]
     }
