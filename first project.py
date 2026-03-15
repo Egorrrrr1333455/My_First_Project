@@ -533,12 +533,40 @@ def events(human):
 
     elif eventss == "торговец":
         print(f"Вы встретили торговца!")
+        zelye = Item("Зелье Лечения","heal","20","10","rare")
+        mech = Item("Старый Меч", "weapon", "5", "30", "rare")
+        bronya = Item("Кожанная Броня", "armor", "3", "25", "rare")
+
         Torgovec = Trader()
+
         while True:
             Torgovec.Show_inv_trader()
             vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
             if vopros == 1:
-                pass
+                print(f"Товары торговца")
+                print(f"1 - {zelye.name} +  {zelye.value} HP {zelye.price} - Стоит монет.")
+                print(f"1 - {mech.name} + {mech.value} Урона {mech.price} - Стоит монет.")
+                print(f"1 - {bronya.name} + {bronya.value} Брони {bronya.price} - Стоит монет.")
+
+                buy = input("Что хотите купить? (1-3)")
+
+                if buy == "1" and human.money >= zelye.price:
+                    human.money -= zelye.price
+                    human.inv.append(zelye)
+                    print(f"Вы купили {zelye.name}!")
+
+
+                if buy == "2" and human.money >= mech.price:
+                    human.money -= mech.price
+                    human.inv.append(mech)
+                    print(f"Вы купили {mech.name}!")
+
+                if buy == "1" and human.money >= bronya.price:
+                    human.money -= bronya.price
+                    human.inv.append(bronya)
+                    print(f"Вы купили {bronya.name!")
+
+
             # Тут будет код!!!!!!!!!!!
             elif vopros == 2:
                 break
@@ -546,7 +574,7 @@ def events(human):
     elif eventss == "Битва":
         print(f"⚔️ Вы встретили врага!")
         enemy = Ennemy().enemylevel(
-            human.level)  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
+            human.level())  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
 
     elif eventss == "Сундук":
         print(f"💰Вы нашли сундук!")
