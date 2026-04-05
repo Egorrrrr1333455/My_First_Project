@@ -204,38 +204,48 @@ class Item:
         self.value = value
         self.price = price
         self.rarity = rarity
-    @staticmethod
-    def generation_item(level,item_tupe):
+
+    def generation_item(self, level, item_tupe):
         chance_random_item = random.randint(1, 100)
         if level <= 15:
             if chance_random_item <= 5:
-                rarity = Rarity.legendary
-                price_multy, value_multy = 3, 3
+                rarityy = Rarity.legendary
+                price_multy = 3
+                value_multy = 3
             elif chance_random_item <= 13:
-                rarity = Rarity.mythic
-                price_multy, value_multy = 1.8, 1.4
-            elif chance_random_item <= 25:
-                rarity = Rarity.epic
-                price_multy, value_multy = 1.5, 1.2
+                rarityy = Rarity.mythic
+                price_multy = 1.8
+                value_multy = 1.4
+            elif chance_random_item <= 15:
+                rarityy = Rarity.epic
+                price_multy = 1.5
+                value_multy = 1.2
             else:
-                rarity = Rarity.rare
-                price_multy, value_multy = 1, 0.6
-        else:
-            if chance_random_item <= 8:
-                rarity = Rarity.legendary
-                price_multy, value_multy = 3, 3
-            elif chance_random_item <= 19:
-                rarity = Rarity.mythic
-                price_multy, value_multy = 1.8, 1.4
-            elif chance_random_item <= 35:
-                rarity = Rarity.epic
-                price_multy, value_multy = 1.5, 1.2
-            else:
-                rarity = Rarity.rare
-                price_multy, value_multy = 1, 0.6
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 0.6
 
-        value = 10 #* value_multy
-        price = 10 #* price_multy
+
+        elif level <= 29:
+            if chance_random_item <= 8:
+                rarityy = Rarity.legendary
+                price_multy = 3
+                value_multy = 3
+            elif chance_random_item <= 19:
+                rarityy = Rarity.mythic
+                price_multy = 1.8
+                value_multy = 1.4
+            elif chance_random_item <= 25:
+                rarityy = Rarity.epic
+                price_multy = 1.5
+                value_multy = 1.2
+            else:
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 0.6
+
+        value = self.value * value_multy
+        price = self.price * price_multy
         all_buffs = ["Ловкости", "Силы"]
         random_buff = random.choice(all_buffs)
         if item_tupe == "heal":
@@ -243,10 +253,10 @@ class Item:
         elif item_tupe == "buff":
             name = f"Зелье {random_buff}"
         elif item_tupe == "weapon":
-            name = f"{rarity} Меч!"
+            name = f"{rarityy} Меч!"
         else:
-            name = f"{rarity} Броня"
-        return Item(name, item_tupe, value, price, rarity)
+            name = f"{rarityy} Броня"
+        return Item(name, item_tupe, value, price, rarityy)
 
 
 class Trader:
@@ -359,24 +369,24 @@ class Ennemy:
         self.exp = exp
 
         # Уровни врага
-    @staticmethod
-    def enemylevel(level):
-        enemy = [Enemy(3, 1, 1, 10, 1, 10, 1, "Скелет"),
-                 Enemy(5, 1, 1, 5, 3, 20, 5, "Зомби"),
-                 Enemy(10, 1, 1, 10, 5, 25, 13, "Ведьма"),
-                 Enemy(15, 15, 25, 35, 7, 50, 15, "Зомби-Гигант"),
-                 Enemy(20, 30, 35, 55, 10, 65, 17, "Джеф-Убийца"),
-                 Enemy(25, 15, 20, 50, 12, 70, 18, "Маг"),
-                 Enemy(30, 45, 50, 70, 14, 100, 19, "Мега-Рыцарь"),
-                 Enemy(45, 70, 90, 90, 17, 120, 22, "Падший-Ангел"),
-                 Enemy(50, 0, 150, 150, 19, 170, 25, "Электро-ведьма"),
-                 Enemy(80, 100, 190, 150, 251, 200, 25, "Титан"),
+
+    def enemylevel(self, level):
+        enemy = [Enemy(3, 1, 1, 10, 10, 10, 1, "Скелет"),
+                 Enemy(5, 1, 1, 5, 5, 20, 5, "Зомби"),
+                 Enemy(10, 1, 1, 10, 20, 25, 13, "Ведьма"),
+                 Enemy(15, 15, 25, 35, 25, 50, 15, "Зомби-Гигант"),
+                 Enemy(20, 30, 35, 55, 35, 65, 17, "Джеф-Убийца"),
+                 Enemy(25, 15, 20, 50, 50, 70, 18, "Маг"),
+                 Enemy(30, 45, 50, 70, 65, 100, 19, "Мега-Рыцарь"),
+                 Enemy(45, 70, 90, 90, 85, 120, 22, "Падший-Ангел"),
+                 Enemy(50, 0, 150, 150, 100, 170, 25, "Электро-ведьма"),
+                 Enemy(80, 100, 190, 150, 110, 200, 25, "Титан"),
 
                  ]
         enemylvl = []
         bosslevel = max(1, level + random.randint(-1, 2))
         for i in enemy:
-            if i.level <= bosslevel:
+            if i.level == bosslevel:
                 enemylvl.append(i)
 
         randomch = random.choice(enemylvl)
@@ -515,7 +525,7 @@ def fight(human, enemy):
 def events(human):
     events_spisok = ["озеро", "торговец", "Битва", "Сундук", "Цветок"]
     # цветок - лечебный
-    eventss = "Битва" #random.choice(events_spisok)
+    eventss = random.choice(events_spisok)
     if eventss == "озеро":
         print(f"Вы нашли Волшебное Озеро ! Оно вам восстановит чу-чуть здоровья! ")
         human.hp += 5
@@ -523,48 +533,20 @@ def events(human):
 
     elif eventss == "торговец":
         print(f"Вы встретили торговца!")
-        zelye = Item("Зелье Лечения","heal","20","10","rare")
-        mech = Item("Старый Меч", "weapon", "5", "30", "rare")
-        bronya = Item("Кожанная Броня", "armor", "3", "25", "rare")
-
         Torgovec = Trader()
-
         while True:
             Torgovec.Show_inv_trader()
             vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
             if vopros == 1:
-                print(f"Товары торговца")
-                print(f"1 - {zelye.name} +  {zelye.value} HP {zelye.price} - Стоит монет.")
-                print(f"1 - {mech.name} + {mech.value} Урона {mech.price} - Стоит монет.")
-                print(f"1 - {bronya.name} + {bronya.value} Брони {bronya.price} - Стоит монет.")
-
-                buy = input("Что хотите купить? (1-3)")
-
-                if buy == "1" and human.money >= zelye.price:
-                    human.money -= zelye.price
-                    human.inv.append(zelye)
-                    print(f"Вы купили {zelye.name}!")
-
-
-                if buy == "2" and human.money >= mech.price:
-                    human.money -= mech.price
-                    human.inv.append(mech)
-                    print(f"Вы купили {mech.name}!")
-
-                if buy == "1" and human.money >= bronya.price:
-                    human.money -= bronya.price
-                    human.inv.append(bronya)
-                    print(f"Вы купили {bronya.name}!")
-
-
+                pass
             # Тут будет код!!!!!!!!!!!
             elif vopros == 2:
                 break
 
     elif eventss == "Битва":
         print(f"⚔️ Вы встретили врага!")
-        enemy = Ennemy.enemylevel(human.level)  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
-        fight(human,enemy)
+        enemy = Ennemy().enemylevel(
+            human.level)  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
 
     elif eventss == "Сундук":
         print(f"💰Вы нашли сундук!")
@@ -582,12 +564,13 @@ def events(human):
 def Games():
     print(f"Здравствуйте! Вы - путешественик ! На вашем пути будет происходить много событий. Удачи!")
     quest = input("Введите имя вашего персонажа:")
-    print(f"Выберите вашу расу: 1 - Хюман , 2 - Ангел , 3 - Минк , 4 - Киборг.")
+    print(f"Ввыберите вашу расу: 1 - Хюман , 2 - Ангел , 3 - Минк , 4 - Киборг.")
     race_choice = input("Введите свой выбор:")
     race_dict = {"1": "Human", "2": "Angel", "3": "Mink", "4": "Cyborg"}
     race = race_dict.get(race_choice, "Human")
 
-    print(f"Выберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
+    quest1 = input("Ввыберите свой класс:")
+    print(f"Ввыберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
     clas_choice = input("Введите ваш выбор:")
     clas_dict = {"1": "Guardian", "2": "archor", "3": "Witch"}
     classs = clas_dict.get(clas_choice, "archor")
@@ -595,8 +578,8 @@ def Games():
     player = Human(name=quest, race=race, clas=classs, level=1, exp=0, hp=50, strenght=10, agility=10, intelekt=5,
                    dex=0, damage=5, armor=5, money=1000, inv=[])
     player.show_stats()
-    print(f"Игра начата.")
     while True:
+        print(f"Игра начата.")
         print(f"\n{"-" * 50}")
         print("\n1 - Продолжить путешевствие ")
         print("2 - Показать статистику ")
@@ -605,13 +588,13 @@ def Games():
         print("5 - Выйти из игры ")
         quest2 = input("Введите свой выбор:")
 
-        if quest2 == "1":
+        if quest2 == 1:
             events(player)
-        elif quest2 == "2":
+        elif quest2 == 2:
             player.show_stats()
-        elif quest2 == "3":
+        elif quest2 == 3:
             player.show_inv()
-        elif quest2 == "4":
+        elif quest2 == 4:
             if player.inv:
                 player.show_inv()
                 index_item = int(input("Введите номер предмета:"))
@@ -619,7 +602,7 @@ def Games():
             else:
                 print(f"Ваш инвентарь пуст.")
 
-        elif quest2 == "5":
+        elif quest2 == 5:
             print(f"Спасибо что играли.")
             break
         else:
