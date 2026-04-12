@@ -17,7 +17,7 @@ class Human:
         self.dex = dex  # Шанс уклонится от атак.
         self.damage = damage  # cколько урона мы наносим.
         self.armor = armor  # Отрожает урон.
-        self.money = money  # Деньги игрока
+        self.money = 1000  # Деньги игрока
         self.inv = []  # Инвентарь игрока
         self.maxhp = hp  # Макс хп
         self.timebuff = 0  # Отвечает за количевство битв с баффом
@@ -131,7 +131,7 @@ class Human:
         item = self.inv[num]
         if item.item_tupe == "heal":
             if self.hp == self.maxhp:
-                print(f"У вам максимальное количевство здоровья!")
+                print(f"У вас максимальное количевство здоровья!")
             elif self.maxhp < self.hp <= item.value:
                 self.hp = self.maxhp
                 print(f"Вы потеряли своё зелье! У вас максимальное количевство здоровья")
@@ -155,7 +155,7 @@ class Human:
             self.inv.remove(item)
 
         elif item.item_tupe == "armor":
-            self.damage += item.value
+            self.armor += item.value
             print(f"Вы успешно одели {item.name}! Броня увеличена на {item.value}!")
             self.inv.remove(item)
 
@@ -204,8 +204,8 @@ class Item:
         self.value = value
         self.price = price
         self.rarity = rarity
-
-    def generation_item(self, level, item_tupe):
+    @staticmethod
+    def generation_item(level, item_tupe):
         chance_random_item = random.randint(1, 100)
         if level <= 15:
             if chance_random_item <= 5:
@@ -244,8 +244,48 @@ class Item:
                 price_multy = 1
                 value_multy = 0.6
 
-        value = self.value * value_multy
-        price = self.price * price_multy
+
+        elif level <= 39:
+            if chance_random_item <= 8:
+                rarityy = Rarity.legendary
+                price_multy = 5
+                value_multy = 3
+            elif chance_random_item <= 19:
+                rarityy = Rarity.mythic
+                price_multy = 2
+                value_multy = 2
+            elif chance_random_item <= 25:
+                rarityy = Rarity.epic
+                price_multy = 1.5
+                value_multy = 1.5
+            else:
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 0.5
+
+
+        else:
+            if chance_random_item <= 8:
+                rarityy = Rarity.legendary
+                price_multy = 4.5
+                value_multy = 5
+            elif chance_random_item <= 19:
+                rarityy = Rarity.mythic
+                price_multy = 3
+                value_multy = 3
+            elif chance_random_item <= 25:
+                rarityy = Rarity.epic
+                price_multy = 2
+                value_multy = 1.5
+            else:
+                rarityy = Rarity.rare
+                price_multy = 1
+                value_multy = 1
+
+
+
+        value = 5 * value_multy
+        price = 10 * price_multy
         all_buffs = ["Ловкости", "Силы"]
         random_buff = random.choice(all_buffs)
         if item_tupe == "heal":
@@ -253,9 +293,9 @@ class Item:
         elif item_tupe == "buff":
             name = f"Зелье {random_buff}"
         elif item_tupe == "weapon":
-            name = f"{rarityy} Меч!"
+            name = f"{rarityy.value} Меч!"
         else:
-            name = f"{rarityy} Броня"
+            name = f"{rarityy.value} Броня"
         return Item(name, item_tupe, value, price, rarityy)
 
 
@@ -292,10 +332,13 @@ class Trader:
     }
 
     # рандомайзер
-    def __init__(self, name, tupe):
+    def __init__(self,tupe=None):
+        if tupe is None:
+            tupe = self.shops()
         if tupe in self.chance:
             self.tupe = tupe
             self.name = self.chance[self.tupe]["имя"]
+            self.inv = self.create_inv()
 
             # Опять же рандомайзер на торговцев
 
@@ -318,10 +361,13 @@ class Trader:
         if self.tupe in self.ITEMS:
             special_items = self.ITEMS[self.tupe]
 
+        all_tupes = {"Мечник":"weapon","Броник":"armor","Алхимик":"buff","Волшебник":"heal"}
+        item_type = all_tupes.get(self.tupe,"heal")
         cifras = random.randint(3, 5)
         for i in range(cifras):
-            if special_items == True:
-                item = random.choice(special_items)
+            #if special_items: #убрал True потому что список иногда не равен True , а проверка на непустой список делается только через if special_items в данном случае.
+                #item = random.choice(special_items)
+                item = Item.generation_item(level=15,item_tupe=item_type)
                 inv.append(item)
         return inv
 
@@ -349,9 +395,22 @@ class Trader:
         ]
     }
 
-    def Show_inv_trader(self, Trader):
+    def Show_inv_trader(self):
         for i, j in enumerate(self.inv, 0):
-            print(f"{i} {j.name} {j.price}")
+            print(f"{i} - Название:{j.name} Цена: {j.price}, Эфективность предмета: {j.value}")
+    def buy_item(self,human,index):
+        if index < 0 or index >= len(self.inv):
+            print(f"Неверный номер.")
+            return
+        item = self.inv[index]
+        if human.money > item.price:
+            human.money -= item.price
+            human.inv.append(item)
+            self.inv.pop(index)
+            print(f"Вы купили {item.name} за {item.price} деняг.У вас осталось {human.money} деняг!")
+        else:
+            print(f"У вас не хватает деняг!!!")
+
 
     # класс врага
 
@@ -525,28 +584,50 @@ def fight(human, enemy):
 def events(human):
     events_spisok = ["озеро", "торговец", "Битва", "Сундук", "Цветок"]
     # цветок - лечебный
-    eventss = random.choice(events_spisok)
+    eventss = "торговец" #random.choice(events_spisok)
     if eventss == "озеро":
         print(f"Вы нашли Волшебное Озеро ! Оно вам восстановит чу-чуть здоровья! ")
-        human.hp += 5
+        if human.hp == human.maxhp:
+            print(f"У вас максимальное количевство здоровья!")
+        elif human.maxhp - human.hp <= 5:
+            human.hp = human.maxhp
+            print(f"Вы потеряли своё зелье! У вас максимальное количевство здоровья")
+        else:
+            human.hp += 5
+            print(f"Вы потеряли своё зелье и восстановили 5 здоровья! У вас теперь {human.hp} Здоровья!!!")
         print(f"Вы восстановили здоровье! Теперь у вас {human.hp} Здоровья!")
 
     elif eventss == "торговец":
         print(f"Вы встретили торговца!")
         Torgovec = Trader()
+        print(f"Торговец: {Torgovec.name}({Torgovec.tupe})")
         while True:
             Torgovec.Show_inv_trader()
-            vopros = input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти.")
+            try:
+                vopros = int(input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти."))
+            except ValueError as e:
+                print(e)
+
+
             if vopros == 1:
-                pass
+                try:
+
+                    indexx = int(input("Введите номер предмета: "))
+                except ValueError as e:
+                    print(e)
+
+                Torgovec.buy_item(human,indexx)
+
             # Тут будет код!!!!!!!!!!!
             elif vopros == 2:
                 break
 
+
     elif eventss == "Битва":
         print(f"⚔️ Вы встретили врага!")
-        enemy = Ennemy().enemylevel(
-            human.level)  # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
+        enemy = Ennemy("", 0, 0, 0, 0, 0, 0, 0, 0).enemylevel(human.level)
+              # Ну вообщем это генерация подходящего босса под уровень нашего игрока.
+        fight(human,enemy)
 
     elif eventss == "Сундук":
         print(f"💰Вы нашли сундук!")
@@ -557,7 +638,13 @@ def events(human):
     elif eventss == "Цветок":
         print(f"🌸Вы нашли волшебный цветок!")
         heal = random.randint(5, 20)
-        human.hp += heal
+        if human.hp == human.maxhp:
+            print(f"У вас максимальное количевство здоровья!")
+        elif human.maxhp - human.hp <= heal:
+            human.hp = human.maxhp
+
+        else:
+            print(f"Вы потеряли своё зелье и восстановили {heal} здоровья! У вас теперь {human.hp} Здоровья!!!")
         print(f"🌸Цветок вам восстановил {heal} Здоровья! Теперь у вас {human.hp} Здоровья!!!")
 
 
@@ -569,8 +656,7 @@ def Games():
     race_dict = {"1": "Human", "2": "Angel", "3": "Mink", "4": "Cyborg"}
     race = race_dict.get(race_choice, "Human")
 
-    quest1 = input("Ввыберите свой класс:")
-    print(f"Ввыберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
+    print(f"Выберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
     clas_choice = input("Введите ваш выбор:")
     clas_dict = {"1": "Guardian", "2": "archor", "3": "Witch"}
     classs = clas_dict.get(clas_choice, "archor")
@@ -578,8 +664,8 @@ def Games():
     player = Human(name=quest, race=race, clas=classs, level=1, exp=0, hp=50, strenght=10, agility=10, intelekt=5,
                    dex=0, damage=5, armor=5, money=1000, inv=[])
     player.show_stats()
+    print(f"Игра начата.")
     while True:
-        print(f"Игра начата.")
         print(f"\n{"-" * 50}")
         print("\n1 - Продолжить путешевствие ")
         print("2 - Показать статистику ")
@@ -588,13 +674,13 @@ def Games():
         print("5 - Выйти из игры ")
         quest2 = input("Введите свой выбор:")
 
-        if quest2 == 1:
+        if quest2 == "1":
             events(player)
-        elif quest2 == 2:
+        elif quest2 == "2":
             player.show_stats()
-        elif quest2 == 3:
+        elif quest2 == "3":
             player.show_inv()
-        elif quest2 == 4:
+        elif quest2 == "4":
             if player.inv:
                 player.show_inv()
                 index_item = int(input("Введите номер предмета:"))
@@ -602,7 +688,7 @@ def Games():
             else:
                 print(f"Ваш инвентарь пуст.")
 
-        elif quest2 == 5:
+        elif quest2 == "5":
             print(f"Спасибо что играли.")
             break
         else:
