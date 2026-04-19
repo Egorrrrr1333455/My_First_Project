@@ -58,31 +58,33 @@ class Human:
             self.damage += 50
             self.armor += 40
 
+
     def clas(self):
-        if self.clas == "guardian":
-            self.hp += 20
-            self.strenght += 15
-            self.agility += 10
-            self.intelekt += 9
-            self.dex += 10
-            self.damмнage += 5
-            self.armor += 25
-        elif self.race == "archor":
-            self.hp += 10
-            self.strenght += 5
-            self.agility += 0
-            self.intelekt += 20
-            self.dex += 1
-            self.damage += 15
-            self.armor += 5
-        elif self.race == "witch":
-            self.hp += 20
-            self.strenght += 10
-            self.agility += 5
-            self.intelekt += 0
-            self.dex += 5
-            self.damage += 30
-            self.armor += 10
+            if self.clas == "guardian":
+                self.hp += 20
+                self.strenght += 15
+                self.agility += 10
+                self.intelekt += 9
+                self.dex += 10
+                self.damage += 5
+                self.armor += 25
+            elif self.race == "archor":
+                self.hp += 10
+                self.strenght += 5
+                self.agility += 0
+                self.intelekt += 20
+                self.dex += 1
+                self.damage += 15
+                self.armor += 5
+            elif self.race == "witch":
+                self.hp += 20
+                self.strenght += 10
+                self.agility += 5
+                self.intelekt += 0
+                self.dex += 5
+                self.damage += 30
+                self.armor += 10
+
 
             # добавляем функцию показа статистик по команде
 
@@ -535,11 +537,17 @@ def fight(human, enemy):
     print(f"Нажмите 1 что бы начать битву! Или нажмите 2 что-бы попытаться сбежать.")
 
     # выбор человека что он будет делать.
-    vibor = input(f"Введите ваш выбор:")
+    try:
+        vibor = input(f"Введите ваш выбор:")
+    except ValueError as e:
+        print(e)
     while human.hp > 0 and enemy.hp > 0:
         if vibor == 1:
-            # Ну типа как они дратся будут
-            vibor_bitvi = input(f"Нажмите 1 что-бы ударить, Нажмите 2 что бы увернутся")
+
+            try:
+                vibor_bitvi = input(f"Нажмите 1 что-бы ударить, Нажмите 2 что бы увернутся")
+            except ValueError as e:
+                print(e)
             if vibor_bitvi == 1:
                 check = Hit_Chance(enemy, human)
                 if check == True:
@@ -607,7 +615,7 @@ def events(human):
                 vopros = int(input("Нажмите 1 что-бы торговатся , нажмите 2 если хотите уйти."))
             except ValueError as e:
                 print(e)
-
+                continue
 
             if vopros == 1:
                 try:
@@ -650,14 +658,21 @@ def events(human):
 
 def Games():
     print(f"Здравствуйте! Вы - путешественик ! На вашем пути будет происходить много событий. Удачи!")
-    quest = input("Введите имя вашего персонажа:")
+    try:
+        quest = input("Введите имя вашего персонажа:")
+    except ValueError as e:
+        print(e)
     print(f"Ввыберите вашу расу: 1 - Хюман , 2 - Ангел , 3 - Минк , 4 - Киборг.")
     race_choice = input("Введите свой выбор:")
     race_dict = {"1": "Human", "2": "Angel", "3": "Mink", "4": "Cyborg"}
     race = race_dict.get(race_choice, "Human")
 
     print(f"Выберите ваш класс: 1 - Рыцарь , 2 - Мечник , 3 - Ведьма.")
-    clas_choice = input("Введите ваш выбор:")
+    try:
+        clas_choice = input("Введите ваш выбор:")
+    except ValueError as e:
+        print(e)
+
     clas_dict = {"1": "Guardian", "2": "archor", "3": "Witch"}
     classs = clas_dict.get(clas_choice, "archor")
 
@@ -672,7 +687,10 @@ def Games():
         print("3 - Показать инвентарь ")
         print("4 - Использовать предмет ")
         print("5 - Выйти из игры ")
-        quest2 = input("Введите свой выбор:")
+        try:
+            quest2 = input("Введите свой выбор:")
+        except ValueError as e:
+            print(e)
 
         if quest2 == "1":
             events(player)
@@ -683,7 +701,10 @@ def Games():
         elif quest2 == "4":
             if player.inv:
                 player.show_inv()
-                index_item = int(input("Введите номер предмета:"))
+                try:
+                    index_item = int(input("Введите номер предмета:"))
+                except ValueError as e:
+                    print(e)
                 player.use_item(index_item)
             else:
                 print(f"Ваш инвентарь пуст.")
